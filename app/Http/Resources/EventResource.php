@@ -21,7 +21,10 @@ class EventResource extends JsonResource
             'type' => $this->type,
             'admin' => new UserResource($this->admin),
             'users' => UserResource::collection($this->users),
-            'payments' => []
+            'purchases' => PurchaseResource::collection($this->purchases),
+            'payments' => PaymentResource::collection($this->payments),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

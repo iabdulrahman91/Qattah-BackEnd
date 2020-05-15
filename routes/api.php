@@ -29,12 +29,21 @@ Route::group(['middleware' => 'auth:api'], function () {
 Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('events', 'Api\EventController@index');
-    // adding new Listing
+    Route::get('events/{event}', 'Api\EventController@show');
     Route::post('events', 'Api\EventController@store');
-
-    // Security: changed {event}to id because we want to prevent 404 to show.
-    // it should send 401 whenever a user try to access other users event or the listing is not existed
     Route::put('events/{event}', 'Api\EventController@update');
     Route::delete('events/{event}', 'Api\EventController@destroy');
+
+    Route::get('purchases', 'Api\PurchaseController@index');
+    Route::get('purchases/{purchase}', 'Api\PurchaseController@show');
+    Route::post('purchases', 'Api\PurchaseController@store');
+    Route::put('purchases/{purchase}', 'Api\PurchaseController@update');
+    Route::delete('purchases/{purchase}', 'Api\PurchaseController@destroy');
+
+    Route::get('payments', 'Api\PaymentController@index');
+    Route::get('payments/{payment}', 'Api\PaymentController@show');
+    Route::post('payments', 'Api\PaymentController@store');
+    Route::put('payments/{payment}', 'Api\PaymentController@update');
+    Route::delete('payments/{payment}', 'Api\PaymentController@destroy');
 
 });

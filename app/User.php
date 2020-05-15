@@ -47,4 +47,16 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Event::class)->withPivot('active')->withtimestamps();
     }
+
+    public function purchases(){
+        return $this->hasMany(Purchase::class, 'user_id', 'id');
+    }
+
+    public function sentPayments(){
+        return $this->hasMany(Payment::class, 'user_id', 'id');
+    }
+
+    public function receivedPayments(){
+        return $this->hasMany(Payment::class, 'receiver_id', 'id');
+    }
 }

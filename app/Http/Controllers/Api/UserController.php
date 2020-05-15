@@ -107,20 +107,7 @@ class UserController extends Controller
      */
     public function userLookup(String $userName)
     {
-        // make validator
-        // $validator = Validator::make($request->all(), [
-        //     'userName' => 'required',
-        // ]);
 
-        // // validate request
-        // if ($validator->fails()) {
-        //     return response()
-        //         ->json(['error' => $validator->errors()])
-        //         ->setStatusCode(400);
-        // }
-
-        // $input = $request->all(['userName']);
-        
         if ($userName == null) {
             return response()
                 ->json(['message' => 'Not Found.'])

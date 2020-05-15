@@ -24,7 +24,7 @@ class EventTest extends TestCase
         $res = $this->json('GET', 'api/events',
             ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
-        $res->assertStatus(401);
+        $res->assertUnauthorized();
     }
 
     public function test_UnAuthorized_cannot_Create_Events()
@@ -34,7 +34,7 @@ class EventTest extends TestCase
         $res = $this->json('POST', 'api/events',
             ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
-        $res->assertStatus(401);
+        $res->assertUnauthorized();
     }
 
     public function test_Authorized_can_Access_Events()
@@ -45,21 +45,21 @@ class EventTest extends TestCase
         $res = $this->json('GET', 'api/events',[],
             ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
-        $res->assertStatus(200);
+        $res->assertSuccessful();
     }
 
     public function test_Authorized_can_see_Events()
     {
         $user = factory(User::class)->create();
-        $event = factory(Event::class)->create();
-        $event->users()->sync($user);
+//        $user->managedEvent()->save(factory(Event::class)->create());
+        $event = factory(Event::class)->make();
+        $user->managedEvents()->save($event);
+//        $user->events()->attach($event, ['active' => true]);
         Passport::actingAs($user);
 
         $res = $this->json('GET', 'api/events',[],
             ['Accept' => 'application/json', 'Content-type' => 'application/json']);
-        
-            //TODO make sure structure is currect
-        $res->assertStatus(200);
+        $res->assertJsonStructure(["data"]);
     }
 
 }

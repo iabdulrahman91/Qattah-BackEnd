@@ -34,4 +34,12 @@ class Event extends Model
     {
         return $this->belongsToMany(User::class)->withPivot('active')->withtimestamps();
     }
+
+    public function purchases(){
+        return $this->hasMany(Purchase::class);
+    }
+
+    public function payments(){
+        return $this->hasMany(Payment::class);
+    }
 }

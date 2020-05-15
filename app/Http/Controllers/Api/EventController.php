@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Event;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -12,6 +13,12 @@ use App\Http\Resources\EventResource;
 
 class EventController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -52,7 +59,8 @@ class EventController extends Controller
         $input = $request->all(['name', 'type']);
         $event = new Event($input);
         $user->managedEvents()->save($event);
-        $user->events()->attach($event, ['active' => true]);
+
+        $event->users()->attach($user, ['active' => true]);
 
         return new EventResource($event);
     }
@@ -66,6 +74,7 @@ class EventController extends Controller
     public function show(Event $event)
     {
         //
+        return new EventResource($event);
     }
 
     /**
@@ -77,7 +86,33 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-        //
+        // get user
+        $user = Auth::user();
+
+        if($event->admin->id != $user->id){
+            return response()
+                ->json(['message' => 'Forbidden'])
+                ->setStatusCode(403);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:App\User,id',
+        ]);
+
+        // validate request
+        if ($validator->fails()) {
+            return response()
+                ->json(['error' => $validator->errors()])
+                ->setStatusCode(400);
+        }
+
+        $input = $request->all(['user_id']);
+        $newUser = User::find($request->user_id);
+
+        $newUser->events()->attach($event, ['active' => true]);
+        return new EventResource($event);
+
+
     }
 
     /**
