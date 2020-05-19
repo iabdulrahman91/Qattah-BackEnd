@@ -17,7 +17,7 @@ class PurchaseResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_id' => new UserResource(User::find($this->user_id)),
+            'user' => new UserResource(User::find($this->user_id)),
             'event_id' => $this->event_id,
             'itemName' => $this->itemName,
             'cost' => $this->cost,

@@ -16,7 +16,7 @@ class EventController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api');
+        $this->middleware('eventAdmin')->only(['destroy']);
     }
 
     /**
@@ -118,11 +118,17 @@ class EventController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Event  $event
+     * @param \App\Event $event
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy(Event $event)
     {
-        //
+        $event->users->each(function ($user) use ($event) {
+            $user->events()->detach($event);
+        });
+        $event->delete();
+        return new EventResource($event);
+
     }
 }
