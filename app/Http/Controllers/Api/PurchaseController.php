@@ -13,6 +13,15 @@ use Validator;
 class PurchaseController extends Controller
 {
     /**
+     * PurchaseController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware(['adminOrOwner', 'owner'])->only(['destroy']);
+
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -87,5 +96,8 @@ class PurchaseController extends Controller
     public function destroy(Purchase $purchase)
     {
         // todo
+        $purchase->delete();
+        return new PurchaseResource($purchase);
+
     }
 }

@@ -12,6 +12,14 @@ use Illuminate\Http\Request;
 class PaymentController extends Controller
 {
     /**
+     * PaymentController constructor.
+     */
+    public function __construct()
+    {
+//        $this->middleware(['adminOrOwner'])->only(['destroy']);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -91,6 +99,7 @@ class PaymentController extends Controller
      */
     public function destroy(Payment $payment)
     {
-        // todo
+        $payment->delete();
+        return new PaymentResource($payment);
     }
 }
