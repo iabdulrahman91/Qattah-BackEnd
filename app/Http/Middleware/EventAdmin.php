@@ -21,7 +21,7 @@ class EventAdmin
             return $next($request);
         }
         return response()
-            ->json(['message' => 'Forbidden'])
+            ->json(['message' => 'Forbidden! you need to be the event admin to perform this action.'])
             ->setStatusCode(403);
     }
 }
