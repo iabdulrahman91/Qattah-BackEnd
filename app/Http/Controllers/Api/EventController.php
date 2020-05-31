@@ -44,8 +44,8 @@ class EventController extends Controller
         $user = Auth::user();
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|alpha|max:255',
-            'type' => 'required|alpha|max:255',
+            'name' => 'required|string|max:255',
+            'type' => 'required|string|max:255',
         ]);
 
         // validate request

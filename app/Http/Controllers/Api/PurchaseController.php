@@ -46,7 +46,7 @@ class PurchaseController extends Controller
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|exists:App\User,id',
             'event_id' => 'required|exists:App\Event,id',
-            'itemName' => 'required|alpha_num',
+            'itemName' => 'required|string',
             'cost' => 'required|Numeric',
         ]);
 
