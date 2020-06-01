@@ -24,7 +24,7 @@ class DestroyPurchaseTest extends TestCase
 
     }
 
-    public function test_admin_cannot_delete_Purchase()
+    public function test_admin_can_delete_Purchase()
     {
         $event = Event::first();
         $user = factory(User::class)->create();
@@ -41,7 +41,7 @@ class DestroyPurchaseTest extends TestCase
             [],
             ['Accept' => 'application/json', 'Content-type' => 'application/json']);
 
-        $res->assertForbidden();
+        $this->assertDeleted($purhcase);
     }
 
     public function test_owner_can_delete_Purchase()
