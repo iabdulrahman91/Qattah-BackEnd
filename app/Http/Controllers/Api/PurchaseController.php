@@ -17,7 +17,7 @@ class PurchaseController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['adminOrOwner', 'owner'])->only(['destroy']);
+        $this->middleware(['adminOrOwner'])->only(['destroy']);
 
     }
 
