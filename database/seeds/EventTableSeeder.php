@@ -17,7 +17,7 @@ class EventTableSeeder extends Seeder
             foreach (range(1,rand(2,5)) as $i){
                 $event = factory(App\Event::class)->make();
                 $user->managedEvents()->save($event);
-                $user->events()->attach($event, ['active' => true]);
+                $user->events()->attach($event);
             }
 
         });

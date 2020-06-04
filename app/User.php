@@ -45,7 +45,7 @@ class User extends Authenticatable
 
     public function events()
     {
-        return $this->belongsToMany(Event::class)->withPivot('active')->withtimestamps();
+        return $this->belongsToMany(Event::class)->withtimestamps();
     }
 
     public function purchases(){
@@ -58,5 +58,20 @@ class User extends Authenticatable
 
     public function receivedPayments(){
         return $this->hasMany(Payment::class, 'receiver_id', 'id');
+    }
+
+    public function friends()
+    {
+        return $this->belongsToMany(User::class, 'friend_user', 'user_id', 'friend_id');
+    }
+
+    public function addFriends(Array $users)
+    {
+        return $this->friends()->syncWithoutDetaching($users);
+    }
+
+    public function removeFriends(User $users)
+    {
+        return $this->friends()->detach($users);
     }
 }

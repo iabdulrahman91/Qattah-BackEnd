@@ -16,7 +16,7 @@ class EventController extends Controller
 
     public function __construct()
     {
-        $this->middleware('eventAdmin')->only(['destroy']);
+        $this->middleware('eventAdmin')->only(['destroy', 'update']);
     }
 
     /**
@@ -60,7 +60,7 @@ class EventController extends Controller
         $event = new Event($input);
         $user->managedEvents()->save($event);
 
-        $event->users()->attach($user, ['active' => true]);
+        $event->users()->attach($user);
 
         return new EventResource($event);
     }
@@ -86,17 +86,10 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-        // get user
         $user = Auth::user();
 
-        if($event->admin->id != $user->id){
-            return response()
-                ->json(['message' => 'Forbidden'])
-                ->setStatusCode(403);
-        }
-
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:App\User,id',
+            'users_id' => 'required|array',
         ]);
 
         // validate request
@@ -106,10 +99,16 @@ class EventController extends Controller
                 ->setStatusCode(400);
         }
 
-        $input = $request->all(['user_id']);
-        $newUser = User::find($request->user_id);
+        $users_id = $request->input('users_id');
 
-        $newUser->events()->attach($event, ['active' => true]);
+        $event->users()->sync($users_id);
+
+        // update friend list
+        $user->addFriends($users_id);
+        // remove the requester from his/her friendship list
+        $user->removeFriends($user);
+
+
         return new EventResource($event);
 
 
