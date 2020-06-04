@@ -19,15 +19,18 @@ Route::post('user/login', 'Api\UserController@login');
 Route::post('user/reg', 'Api\UserController@register');
 
 Route::group(['middleware' => 'auth:api'], function () {
+
+
     Route::get('user/details', 'Api\UserController@details');
     Route::put('user/update', 'Api\UserController@update');
     Route::get('user/lookup/{userName}', 'Api\UserController@userLookup');
-});
 
-// Route::get('events', 'Api\EventController@index')->middleware('auth:api');
+    Route::get('friends', 'Api\FriendController@index');
+    Route::get('friends/{friend}', 'Api\FriendController@show');
+    Route::post('friends', 'Api\FriendController@store');
+    Route::put('friends/{friend}', 'Api\FriendController@update');
+    Route::delete('friends/{friend}', 'Api\FriendController@destroy');
 
-// Listing Auth
-Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('events', 'Api\EventController@index');
     Route::get('events/{event}', 'Api\EventController@show');
