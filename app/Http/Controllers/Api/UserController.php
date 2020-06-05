@@ -58,7 +58,7 @@ class UserController extends Controller
     {
         // make validator
         $validator = Validator::make($request->all(), [
-            'userName' => 'required|alpha|max:255|unique:users',
+            'userName' => 'required|alpha-dash|max:255|unique:users',
             'fname' => 'required|alpha|max:255',
             'lname' => 'required|alpha|max:255',
             'email' => 'required|string|email|max:255|unique:users',
